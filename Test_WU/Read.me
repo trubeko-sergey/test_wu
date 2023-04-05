@@ -1,6 +1,36 @@
-Для выполнения и обкатки задания, мной было выбрано решение Yandex.cloud
-Согласно документации, представленной на сайте terraform.io (Через VPN), мной был сформирован файл main.tf с моим ID облаком и ID папки.
-Согласно документации, были созданы ключи для сервисного аккаунта test.
+Для выыполнения тестового задания. мной было выбрано два решения:
+1. terraform //Для автоматизирования развертывания инстансов виртуальных машин
+2. ansible //Для установки необходимого прикладного ПО и копирования настроек
+
+Для обкатки кейса я выбрал Yandex.cloud, для чего в систему был установлен интерфейс командной строки Яндекс.
+С помощью команды cli yandex - "yc init" был получены необходимые данные, в том числе yandex-cloud-OAuth-token.
+с помощью команды "yc iam key create --service-account-name test --output key.json" сформированы необходимые данные для авторизации в том числе 
+ключи шифрования. 
+Согласно документации, представленной на сайте terraform.io (Через VPN), мной был сформирован файл main.tf с моим ID облаком и ID папки и прописан ключ key.json
+Проинициализирован terraform для провайдера yandex.cloud
+
+/*
+nitializing provider plugins...
+- Finding latest version of yandex-cloud/yandex...
+- Installing yandex-cloud/yandex v0.88.0...
+- Installed yandex-cloud/yandex v0.88.0 (self-signed, key ID E40F590B50BB8E40)
+
+Partner and community providers are signed by their developers.
+If you'd like to know more about provider signing, you can read about it here:
+https://www.terraform.io/docs/cli/plugins/signing.html
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+*/
+
+После того как терраформ проинициализирован, прописываем следующие этапы в main.tf
+1. Создание сети VPC и подсетей
+2. Создаем инстанс виртуальной машины // с помощью команды "yc compute image list --folder-id standard-images |grep 22.04" получим список образов. Ubuntu 22.04 имеет ID - 
+3. Указываем первоначальные параметры, такие как 
+
+
 
 Для запрета обращения к сайту по IP, документация nginx предлагает реализовать подобную контрукцию:
 
