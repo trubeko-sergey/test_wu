@@ -49,6 +49,12 @@ resource "yandex_compute_instance" "trubeko" {
     ssh-keys = "ubuntu:${file("/root/.ssh/id_rsa.pub")}"
     //user-data = "${file("init.sh")}" //Согласно документации Яндек.Cloud добавляем скрипт для выполнения постинсталл опеараций
   }
+  deploy_policy {
+    max_unavailable = 2
+    max_creating = 2
+    max_expansion = 2
+    max_deleting = 2
+  }
 }
 // Create a new instance
 //resource "yandex_compute_instance" "default" {
