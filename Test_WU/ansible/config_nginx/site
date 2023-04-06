@@ -1,25 +1,25 @@
 server {
         listen 80 default_server;
+        listen 443 default_server;
         
-        server_name {{ server_name }};
-        root  {{ app_work_dir }}public;
+        server_name lavarel.site;
+        
 
             location / {
-        try_files $uri $uri/ /index.php?$args;
+        root /var/www/lavarel;
         index  index.php index.html index.htm;
+            
     }
 
-    if (!-d $request_filename) {
-        rewrite ^/(.*)/$ /$1 permanent;
+    if ($host ~* ^\d+\.\d+\.\d+\.\d+$) {
+        return 403;
     }
 
-    location =https://cdn.tproger.ru/favicon.ico {
-        access_log     off;
-        log_not_found  off;
+    
     }
 
     location ~ \.php$ {
-        try_files $uri $uri/ /index.php?$args;
+        root /var/www/lavarel;
         index index.php index.html index.htm;
 
         fastcgi_pass unix:/var/run/php/php{{php_version}}-fpm.sock;
@@ -30,4 +30,3 @@ server {
         fastcgi_intercept_errors on;
         include        fastcgi_params;
     }
-}

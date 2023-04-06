@@ -51,6 +51,8 @@ resource "yandex_compute_instance_group" "mygroup" {
     }
     metadata = {
       ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
+      user-data = "${file("init.sh")}"
+
     }
     network_settings {
       type = "STANDARD"

@@ -22,12 +22,6 @@
       name: nginx
       state: present
 
-  - name: Start Nginx
-    systemd:
-      name: nginx
-      state: started
-      enabled: yes
-
   - name: Install PHP
     apt:
       name:
@@ -62,20 +56,43 @@
       name:
       composer
 
-  - name: Install lavarel
-    apt:
-      name:
-
-
-
-
   - name: Update nginx config
     copy:
-      src: files/default
+      src: /config_nginx/site
       dest: /etc/nginx/sites-available/default
       owner: www-data
       group: www-data
     notify: Restart Nginx
+
+  - name: Create simlink Nginx
+      file:
+        src: /etc/nginx/sites-available/laravel.conf
+        dest: /etc/nginx/sites-enabled/laravel.conf
+        state: link
+      
+  - name: clone laravel
+      git:
+        repo: https://github.com/laravel/laravel.git
+        dest: /var/www/lavarel
+    become: yes
+  
+  - name: set permission for lavarel folder
+    file:
+      path: /var/www/lavarel
+      state: directory
+      owner: www-data
+      group: www-data
+      recurse: yes
+      mode: '0755'
+    become: yes
+
+ - name: Настройка прав на директорию проекта Laravel
+      file:
+        path: /var/www/laravel
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: "0755"
 
   handlers:
   - name: Restart Nginx
